@@ -1,11 +1,18 @@
 from fastapi import FastAPI, HTTPException
 
-from src.models import Item, MediaType
+from src.models import Item, MediaType, Recommender
 from src.recommendations import get_recommended_items
 
 app = FastAPI(title="Animanga Recommenders")
 
 SAMPLED_USERS_COUNT = 4
+
+
+@app.on_event("startup")
+def load_recommender():
+    # Load recommender
+    global recommender
+    recommender = Recommender()
 
 
 @app.get("/{user_id}/")
@@ -19,5 +26,5 @@ async def get_recommendations(user_id: int,
         raise HTTPException(status_code=404,
                             detail="user_id can only be between 0 to 3")
 
-    items = get_recommended_items(user_id, media_type, k)
+    items = get_recommended_items(user_id, media_type, k, recommender)
     return [item.dict() for item in items]

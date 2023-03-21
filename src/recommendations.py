@@ -1,9 +1,7 @@
-import pickle
-from src.models import Item, MediaType
+from src.models import Item, MediaType, Recommender
 from functools import partial
 
 import numpy as np
-import pandas as pd
 
 
 def _post_rank(user_id, recs, df):
@@ -47,22 +45,13 @@ def _topk_rank(user_id, k, item_type, crm, items_index, df):
     return items_index.iloc[unseen_items]
 
 
-def get_recommended_items(user_id: int, media_type: MediaType,
-                          k: int) -> list[Item]:
-    SAMPLE_WEIGHTS_PATH = 'assets/sample-weights.pkl'
-    SAMPLE_USERS_PATH = 'assets/sample_users.parquet'
-    ITEMS_INDEX_PATH = 'assets/items_index.parquet'
-
-    with open(SAMPLE_WEIGHTS_PATH, 'rb') as f:
-        model = pickle.load(f)
-    items_index = pd.read_parquet(ITEMS_INDEX_PATH)
-    sample_users = pd.read_parquet(SAMPLE_USERS_PATH)
-
+def get_recommended_items(user_id: int, media_type: MediaType, k: int,
+                          recommender: Recommender) -> list[Item]:
     # personal note: topk_rank could be used flexibly based on k
     topk_rank = partial(_topk_rank,
-                        crm=model,
-                        items_index=items_index,
-                        df=sample_users)
+                        crm=recommender.model,
+                        items_index=recommender.items_index,
+                        df=recommender.sample_users)
     recs = topk_rank(user_id, k, media_type)
 
     return [
