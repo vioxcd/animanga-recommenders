@@ -1,9 +1,9 @@
 from fastapi import FastAPI, HTTPException
 
-app = FastAPI()
-
 from src.models import Item, MediaType
 from src.recommendations import get_recommended_items
+
+app = FastAPI(title="Animanga Recommenders")
 
 SAMPLED_USERS_COUNT = 4
 

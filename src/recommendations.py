@@ -1,4 +1,3 @@
-import os
 import pickle
 from src.models import Item, MediaType
 from functools import partial
@@ -56,10 +55,10 @@ def get_recommended_items(user_id: int, media_type: MediaType,
 
     with open(SAMPLE_WEIGHTS_PATH, 'rb') as f:
         model = pickle.load(f)
-
     items_index = pd.read_parquet(ITEMS_INDEX_PATH)
     sample_users = pd.read_parquet(SAMPLE_USERS_PATH)
 
+    # personal note: topk_rank could be used flexibly based on k
     topk_rank = partial(_topk_rank,
                         crm=model,
                         items_index=items_index,
@@ -69,6 +68,4 @@ def get_recommended_items(user_id: int, media_type: MediaType,
     return [
         Item(item_id=item_id, title=title, media_type=media_type)
         for item_id, (_, title) in recs.iterrows()
-        #  Item(item_id=20357, title="Shingeki no Kyojin", rating=9.0),
-        #  Item(item_id=12345, title="Houseki no Kuni", rating=10.0),
     ]
