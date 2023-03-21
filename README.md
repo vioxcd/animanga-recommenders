@@ -8,5 +8,14 @@ The experiments are published as paper and it can be accessed [here](https://iee
 
 ## Installation
 
-*To be filled later*
+Use the `build-docker.sh` script to build the image
+
+```bash
+# execute the script to build the image
+chmod +x ./build-docker.sh
+./build-docker.sh
+
+# running the image
+docker run -d --name CONTAINER_NAME -p 8080:80 animanga-recommenders-fastapi:latest
+```
 
