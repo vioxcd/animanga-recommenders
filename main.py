@@ -1,6 +1,7 @@
 from fastapi import FastAPI, HTTPException
 
-from src.models import AssociationRules, Favorite, Item, MediaType, Recommender
+from src.models import (AssociationRules, Favorite, Item, MediaType,
+                        Recommender, Rule, SectionType)
 from src.recommendations import get_recommended_items
 
 app = FastAPI(title="Animanga Recommenders")
@@ -41,3 +42,9 @@ async def get_favorites_predictions(user_id: int) -> list[Favorite]:
 
     items = association_rules.get_predictions(user_id)
     return items
+
+@app.get("/search_rules/{section}/")
+async def search_rules(section: SectionType, query: str) -> list[Rule]:
+
+    rules = association_rules.get_rules(section, query)
+    return rules
