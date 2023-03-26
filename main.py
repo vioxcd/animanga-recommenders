@@ -46,5 +46,11 @@ async def get_favorites_predictions(user_id: int) -> list[Favorite]:
 @app.get("/search_rules/{section}/")
 async def search_rules(section: SectionType, query: str) -> list[Rule]:
 
+	# there's anime with title length as short as 2 (e.g. 86), so imposing limit
+    # for possible query would be hard to do. but, at least, all query shouldn't
+    # be an empty string
+    if query == "":
+        raise HTTPException(status_code=404,
+                            detail="query should not be an empty string")
     rules = association_rules.get_rules(section, query)
     return rules
