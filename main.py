@@ -5,7 +5,7 @@ from src.recommendations import get_recommended_items
 
 app = FastAPI(title="Animanga Recommenders")
 
-SAMPLED_USERS_COUNT = 4
+USERS_COUNT = 4
 
 
 @app.on_event("startup")
@@ -22,7 +22,7 @@ async def get_recommendations(user_id: int,
 
     # as currently the app samples 4 users,
     # throw error if given `user_id` is equal or more than 4
-    if user_id >= SAMPLED_USERS_COUNT:
+    if user_id >= USERS_COUNT:
         raise HTTPException(status_code=404,
                             detail="user_id can only be between 0 to 3")
 

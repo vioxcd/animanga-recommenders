@@ -1,7 +1,8 @@
-from src.models import Item, MediaType, Recommender
 from functools import partial
 
 import numpy as np
+
+from src.models import Item, MediaType, Recommender
 
 
 def _post_rank(user_id, recs, df):
@@ -51,7 +52,7 @@ def get_recommended_items(user_id: int, media_type: MediaType, k: int,
     topk_rank = partial(_topk_rank,
                         crm=recommender.model,
                         items_index=recommender.items_index,
-                        df=recommender.sample_users)
+                        df=recommender.users)
     recs = topk_rank(user_id, k, media_type)
 
     return [
