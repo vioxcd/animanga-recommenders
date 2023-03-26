@@ -6,7 +6,7 @@ The recommendation model is taken from my Bachelor thesis experiment result and 
 
 The experiments are published as paper and it can be accessed [here](https://ieeexplore.ieee.org/abstract/document/9946560)
 
-The association rules is a project I've done a while back that is related to this one, and I find it interesting so I include it here. The implementation is simple, mostly uses what's already given by Spark's [FP-Growth algortihm](https://spark.apache.org/docs/latest/ml-frequent-pattern-mining.html). The implementation can be found [here](./notebooks/Spark_Association_Rules.ipynb)
+The association rules is a project I've done a while back that is related to this one, and I find it interesting so I include it here. The implementation is simple, mostly uses what's already given by Spark's [FP-Growth algorithm](https://spark.apache.org/docs/latest/ml-frequent-pattern-mining.html). The implementation can be found [here](./notebooks/Spark_Association_Rules.ipynb)
 
 ## Installation
 
@@ -57,3 +57,5 @@ For trying out, visit `http://localhost:8000/docs`
 ![Recommendations for me by the association rule model](./images/5-recs-for-me.png)
 
 ![It's using n=15 and taking so long! (almost 30 miutes) ended up using n=20 which takes seconds...](./images/8-training-association-rules.png)
+
+![How favorites looks like in MAL](./images/9-favorites.png)
