@@ -27,4 +27,4 @@ async def get_recommendations(user_id: int,
                             detail="user_id can only be between 0 to 3")
 
     items = get_recommended_items(user_id, media_type, k, recommender)
-    return [item.dict() for item in items]
+    return items
