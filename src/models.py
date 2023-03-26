@@ -20,6 +20,21 @@ class Item(BaseModel):
         use_enum_values = True
 
 
+class FavoriteType(str, Enum):
+    ANIME = "anime"
+    MANGA = "manga"
+    CHARACTERS = "characters"
+    PEOPLE = "people"
+
+
+class Favorite(BaseModel):
+    title: str
+    fav_type: FavoriteType
+
+    class Config:
+        use_enum_values = True
+
+
 class Recommender():
     WEIGHTS_PATH = 'assets/weights.pkl'
     USERS_PATH = 'assets/users.parquet'
@@ -30,3 +45,18 @@ class Recommender():
             self.model = pickle.load(f)
         self.items_index = pd.read_parquet(self.ITEMS_INDEX_PATH)
         self.users = pd.read_parquet(self.USERS_PATH)
+
+class AssociationRules():
+    FAVS_PATH = 'assets/favs.parquet'
+    PREDICTIONS_PATH = 'assets/predictions.parquet'
+
+    def __init__(self):
+        self._favs = pd.read_parquet(self.FAVS_PATH)  # unused
+        self._predictions = pd.read_parquet(self.PREDICTIONS_PATH)
+
+    def get_predictions(self, user_id: int) -> list[Favorite]:
+        preds = self._predictions.query(f'user_id == {user_id}')
+        return [
+            Favorite(title=prediction, fav_type=fav_type)
+            for fav_type, prediction in preds[['type', 'prediction']].values
+        ]
